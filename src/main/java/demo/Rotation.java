@@ -8,6 +8,9 @@ public class Rotation {
 
 	public static int[] solution(int[] A, int K) {
 
+		if (A.length == 0 ) {
+			return A;
+		}
 		List<Integer> list = new LinkedList<Integer>();
 		for (int currentInt : A) {
 			list.add(currentInt);
@@ -24,7 +27,7 @@ public class Rotation {
 	}
 
 	public static List<Integer> rotate(List<Integer> list) {
-		int head = list.get(0);
+
 		int tail = list.get(list.size() - 1);
 
 		//System.out.println("head:" + head);
