@@ -29,7 +29,7 @@ public class DataType {
 
 		// list datatype - Can Change!
 
-		List<Integer> six = Arrays.asList(1, 2, 4, 8);
+		List<Integer> six = Arrays.asList(1, 2, 4, 8 , 8);
 
 		System.out.println("ArrayList before update: " + six);
 		// Updating 1st element
