@@ -1,6 +1,6 @@
 // https://app.codility.com/demo/take-sample-test/
 
-package demo;
+package advance;
 
 import java.util.ArrayList;
 import java.util.Arrays;

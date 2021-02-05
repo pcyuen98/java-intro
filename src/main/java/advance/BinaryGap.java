@@ -1,7 +1,7 @@
 // binary gap example
 // https://app.codility.com/programmers/lessons/1-iterations/binary_gap/start/
 
-package demo;
+package advance;
 
 import java.util.ArrayList;
 import java.util.Arrays;

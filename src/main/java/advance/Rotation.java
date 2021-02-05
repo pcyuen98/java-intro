@@ -1,4 +1,4 @@
-package demo;
+package advance;
 // https://app.codility.com/programmers/lessons/2-arrays/cyclic_rotation/start/
 
 import java.util.LinkedList;
@@ -52,7 +52,7 @@ public class Rotation {
 	public static void main(String args[]) {
 		int[] A = { 3, 8, 9, 7, 6 };
 		int[] processed = solution(A, 3);
-
+		
 		System.out.println("return array:" + processed);
 	}
 }

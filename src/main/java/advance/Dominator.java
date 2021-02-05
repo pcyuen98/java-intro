@@ -1,6 +1,6 @@
 // https://app.codility.com/programmers/lessons/8-leader/
 
-package demo;
+package advance;
 
 import java.util.HashMap;
 import java.util.HashSet;
