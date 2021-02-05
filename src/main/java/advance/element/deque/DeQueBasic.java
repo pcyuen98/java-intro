@@ -1,4 +1,4 @@
-package advance;
+package advance.element.deque;
 
 import java.util.Deque;
 import java.util.Iterator;

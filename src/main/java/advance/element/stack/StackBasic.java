@@ -1,4 +1,4 @@
-package advance;
+package advance.element.stack;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

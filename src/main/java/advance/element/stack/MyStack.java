@@ -1,4 +1,4 @@
-package advance;
+package advance.element.stack;
 
 import java.util.EmptyStackException;
 import java.util.Stack;

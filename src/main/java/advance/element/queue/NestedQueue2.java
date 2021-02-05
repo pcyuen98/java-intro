@@ -1,9 +1,9 @@
-package advance;
+package advance.element.queue;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class NestedQueue {
+public class NestedQueue2 {
 
 	public static int solution(String S) {
 		Deque<Character> stack = new ArrayDeque<Character>();
