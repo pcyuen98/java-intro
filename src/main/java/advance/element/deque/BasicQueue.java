@@ -1,4 +1,4 @@
-package advance.element.queue;
+package advance.element.deque;
 
 import java.util.Iterator;
 import java.util.LinkedList;
