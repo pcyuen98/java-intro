@@ -32,4 +32,7 @@ public class MyStack {
 			System.out.println("it Is Empty Stack");
 		}
 	}
+	public void calculateStack() {
+		
+	}
 }

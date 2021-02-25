@@ -20,6 +20,7 @@ public class BasicPriorityQueue {
 		}
 		queue.remove();
 		queue.poll();
+		
 		System.out.println("after removing two elements:");
 		Iterator<String> itr2 = queue.iterator();
 		while (itr2.hasNext()) {
