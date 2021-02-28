@@ -8,11 +8,11 @@ public class BasicQueue {
 	public static void main(String args[]) {
 		Queue<String> queue = new LinkedList<String>();
 		
-		queue.add("Amit");
-		queue.add("Vijay");
-		queue.add("Karan");
-		queue.add("Jai");
-		queue.add("Rahul");
+		queue.add("a");
+		queue.add("b");
+		queue.add("c");
+		queue.add("d");
+		queue.add("e");
 		System.out.println("head:" + queue.element());
 		System.out.println("head:" + queue.peek());
 		System.out.println("iterating the queue elements:");
