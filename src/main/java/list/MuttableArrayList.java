@@ -1,16 +1,31 @@
 package list;
 
-import java.awt.List;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MuttableArrayList {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		List listA = new List();
-		Set set = new HashSet();
-		set.add(null);
+		List<String> listA = new ArrayList<String>();
+		List<String> listB = listA;
+		
+		List<String> unmodifiable = Collections.unmodifiableList(listA);
+
+		listA.add("1");
+		listA.add(null);
+		System.out.println("before list A--->" + listA);
+		System.out.println("before list B--->" + listB);
+		System.out.println("before list unmodifiable--->" + unmodifiable);
+		
+		//unmodifiable.add("2");
+		listB.add("3");
+		
+		System.out.println("after list A--->" + listA);
+		System.out.println("after list B--->" + listB);
+		System.out.println("after list unmodifiable--->" + unmodifiable);
+		
 	}
 
 }
