@@ -3,6 +3,12 @@ package list;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+// Fail-Fast and Fail -Safe 
+// Any changes in the collection, such as removing element from 
+// the collection during a thread is iterating collection then it 
+// throw concurrent modification exception. 
+// Enumeration  is Fail safe in nature. It doesn’t throw concurrent modification exception 
+
 public class IteratorList {
 
 	public static void main(String[] args) {
