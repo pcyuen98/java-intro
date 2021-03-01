@@ -26,6 +26,8 @@ public class MuttableArrayList {
 		System.out.println("after list B--->" + listB);
 		System.out.println("after list unmodifiable--->" + unmodifiable);
 		
+		
+		
 	}
 
 }
