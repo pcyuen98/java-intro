@@ -28,5 +28,10 @@ public class CollectionsUsages {
 		Collections.replaceAll(arrayList, 1, 99);
 
 		System.out.println("After Replace--->" + arrayList);
+		
+		Collections.addAll(arrayList, 8,9);
+		
+		System.out.println("After add all--->" + arrayList);
+
 	}
 }
