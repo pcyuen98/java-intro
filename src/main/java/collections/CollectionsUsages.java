@@ -29,5 +29,4 @@ public class CollectionsUsages {
 
 		System.out.println("After Replace--->" + arrayList);
 	}
-
 }
