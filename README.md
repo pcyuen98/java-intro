@@ -1,3 +1,5 @@
+<img src="/pic/JEE.jpg">
+
 # java-intro
 
 Installation Guide Here
