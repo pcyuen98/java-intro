@@ -8,30 +8,34 @@ import java.util.regex.Pattern;
 
 public class LongestWord {
 
-	public static final String REG_EXP_SPECIAL_CHAR = "(?=.*?[/$&+,:;=?@#|'<>.^*()%!-])";
+	public static final String REG_EXP_CHAR_ONLY = "(?=.*?[a-zA-Z0-9 ])";
 
 	public static String LongestWord(String sen) {
-
+	
 		StringBuffer strBuffer = new StringBuffer();
 		for (String c : sen.split("")) {
-			if (!isValid(c)) {
+			//System.out.println("c--------->" + c);
+			if (isValid(c)) {
+
 				strBuffer.append(c);
+
 			}
 		}
-		
-		System.out.println(strBuffer.toString());
-		String longest = Arrays.stream(strBuffer.toString().split(" ")).max(Comparator.comparingInt(String::length)).orElse(null);
-		
+
+		//System.out.println(strBuffer.toString());
+		String longest = Arrays.stream(strBuffer.toString().split(" ")).max(Comparator.comparingInt(String::length))
+				.orElse(null);
+
 		return longest;
 	}
 
 	public static boolean isValid(String c) {
-		System.out.println("char -->" + c);
-		Pattern pattern = Pattern.compile(REG_EXP_SPECIAL_CHAR);
+		// System.out.println("char -->" + c);
+		Pattern pattern = Pattern.compile(REG_EXP_CHAR_ONLY);
 		Matcher matcher = pattern.matcher(c);
 		boolean matchFound = matcher.find();
 		if (matchFound) {
-			System.out.println("Match found");
+			// System.out.println("Match found");
 			return true;
 		}
 		return false;
@@ -39,8 +43,12 @@ public class LongestWord {
 
 	public static void main(String[] args) {
 		// keep this function call here
-		@SuppressWarnings("resource")
+		// @SuppressWarnings("resource")
 		Scanner s = new Scanner(System.in);
-		System.out.print(LongestWord("a confusing /:sentence:/[ this is not!!!!!!!~"));
+		// System.out.print(LongestWord("a confusing /:sentence:/[ this is
+		// not!!!!!!!~"));
+
+		s = new Scanner(System.in);
+		System.out.print(LongestWord(s.nextLine()));
 	}
 }
