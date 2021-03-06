@@ -1,3 +1,8 @@
+
+<p align="center">
+  <img width="460" height="300" src="/pic/JEE.jpg">
+</p>
+
 # java-intro
 
 Installation Guide Here
