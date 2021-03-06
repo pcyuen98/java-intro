@@ -1,4 +1,7 @@
-<img src="/pic/JEE.jpg" class="center">
+
+<p align="center">
+  <img width="460" height="300" src="/pic/JEE.jpg">
+</p>
 
 # java-intro
 
