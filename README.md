@@ -1,4 +1,4 @@
-<img src="/pic/JEE.jpg">
+<img src="/pic/JEE.jpg" class="center">
 
 # java-intro
 
