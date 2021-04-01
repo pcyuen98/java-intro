@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class RotataString {
+public class RotateString {
 
 	public static int[] solution(int[] A, int K) {
 

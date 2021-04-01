@@ -2,6 +2,7 @@ package stream;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -75,6 +76,18 @@ public class BasicStream {
 
 	}
 
+	public static void findFirst() {
+
+		System.out.println("\nfindAny");
+
+		init();
+
+		Optional<String> result = lines.stream().filter(str -> "mkyong".equals(str)).findFirst();
+
+		System.out.println("result is present -->" + result.isPresent());
+
+	}
+	
 	public static void contains() {
 
 		System.out.println("\ncontains");

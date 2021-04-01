@@ -32,6 +32,9 @@ public class CollectionsUsages {
 		Collections.addAll(arrayList, 8,9);
 		
 		System.out.println("After add all--->" + arrayList);
-
+		
+		int occurrences = Collections.frequency(arrayList, 9);
+		
+		System.out.println("occurrences--->" + occurrences);
 	}
 }

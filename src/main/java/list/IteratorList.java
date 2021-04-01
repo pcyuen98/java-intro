@@ -13,7 +13,7 @@ public class IteratorList {
 
 	public static void main(String[] args) {
 		// Create and populate the list
-		ArrayList<String> list = new ArrayList<>();
+		ArrayList<String> list = new ArrayList<String>();
 
 		list.add("a");
 		list.add("b");

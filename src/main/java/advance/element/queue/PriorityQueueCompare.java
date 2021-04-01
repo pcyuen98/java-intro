@@ -1,7 +1,7 @@
 package advance.element.queue;
 
-import java.util.PriorityQueue;
 import java.util.Comparator;
+import java.util.PriorityQueue;
 
 class PriorityQueueCompare {
 	public static void main(String[] args) {
