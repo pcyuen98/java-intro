@@ -41,7 +41,7 @@ class StringArrayAndSortedMap {
 		if (strArr == null || strArr.length < 2) {
 			return "not possible";
 		}
-		
+
 		try {
 
 			String line1 = strArr[0];
@@ -52,7 +52,7 @@ class StringArrayAndSortedMap {
 			}
 
 			String[] list2Array = line2.split(",");
-			
+
 			// while loop to find word by word
 			while (line1.length() > 0) {
 
@@ -70,7 +70,7 @@ class StringArrayAndSortedMap {
 
 		}
 
-		//System.out.println("outputArray-->" + outputArray);
+		// System.out.println("outputArray-->" + outputArray);
 
 		if (!outputArray.isEmpty()) {
 			String separatedStr = String.join(",", outputArray);
@@ -84,38 +84,35 @@ class StringArrayAndSortedMap {
 	}
 
 	// line1 - first string element input
-	// listTwo - 2nd elements of the input 
+	// listTwo - 2nd elements of the input
 	public static String getMostMatchingWord(String line1, String[] list2Array) {
-		
-		// changed to NavigableMap so can do reverse Map. Code readability 
+
+		// changed to NavigableMap so can do reverse Map. Code readability
 		NavigableMap<String, Integer> sm = new TreeMap<String, Integer>();
-		System.out.println("\ngetValue started -->" + line1);
-		
-		System.out.println("list2Array-->" + list2Array);
-		
+		System.out.println("\ngetValue started line1-->" + line1);
+
+		String joined = String.join(",", list2Array);
+		System.out.println("list2Array-->" + joined);
+
 		// find matching key words between the 2 elements and insert into the map
 		for (String s : list2Array) {
 			// System.out.println("s-->" + s);
 			int iMatch = line1.indexOf(s);
 
 			String strMatchingFirstWord = "";
-			try {
-				strMatchingFirstWord = line1.substring(0, s.length());
-			} catch (Exception e) {
-
-			}
+			strMatchingFirstWord = line1.substring(0, s.length());
 
 			boolean isMatchingWord = strMatchingFirstWord.equals(s);
 			if (iMatch > -1 && isMatchingWord) {
-				//System.out.println("Match-->" + s);
+				// System.out.println("Match-->" + s);
 
 				sm.put(s, s.length());
 			}
 		}
 
-		//System.out.println("outputList--->" + outputArray);
-		//System.out.println("sm--->" + sm);
-		
+		// System.out.println("outputList--->" + outputArray);
+		// System.out.println("sm--->" + sm);
+
 		// do a revert sort so can find the most matching words at the first list
 		// i.e {b=1, bas=3, base=4} base is suppose the matching word
 		sm = sm.descendingMap();
@@ -123,15 +120,15 @@ class StringArrayAndSortedMap {
 		System.out.println("reverse sort--->" + sm);
 
 		String firstKey = sm.keySet().stream().findFirst().get();
-		
-		//System.out.println("getValue ends firstKey--->" + firstKey);
-		
+
+		// System.out.println("getValue ends firstKey--->" + firstKey);
+
 		// return the most matching word
 		return firstKey;
 	}
 
 	public static void main(String[] args) {
-		//  Scanner s = new Scanner(System.in);
+		// Scanner s = new Scanner(System.in);
 		String[] strArr = new String[] { "baseball", "a,all,b,ball,bas,base,cat,code,d,e,quit,z" };
 
 		String str = ArrayChallenge(strArr);

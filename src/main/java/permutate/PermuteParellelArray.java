@@ -117,7 +117,7 @@ public class PermuteParellelArray {
 		// each sum from the list must be equal for both list
 		String combineList = "-1";
 
-		// get sum of the list to iMatch static int value
+		// get sum of the list to iMatch as static int value
 
 		java.util.List<Integer> arrInt = getIMatch(iArr);
 		boolean isEven = isEven();
@@ -129,7 +129,7 @@ public class PermuteParellelArray {
 			// find a first list
 			combineList = isSetMatch(iMatch / 2);
 
-			System.out.println("combined list--->" + combineList);
+			//System.out.println("combined list--->" + combineList);
 			return combineList;
 		}
 
@@ -143,6 +143,6 @@ public class PermuteParellelArray {
 
 		int[] iArr = new int[] { 1, 2, 3, 4 };
 		String result = ArrayChallenge(iArr);
-
+		System.out.println("combined list--->" + result);
 	}
 }
