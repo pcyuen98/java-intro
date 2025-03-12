@@ -8,6 +8,10 @@ public abstract class AnimalAbstract {
 	private String species;
 	private String ability;
 
+	public AnimalAbstract(String species) {
+		this.species = species;
+	}
+
 	// define rule no.1 - Child class must implement the below
 	public abstract void printSpecies();
 	
