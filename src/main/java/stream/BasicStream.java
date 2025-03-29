@@ -101,9 +101,9 @@ public class BasicStream {
 
 	public static void main(String[] args) {
 		// filter();
-		// findAny();
+		 findAny();
 		// contains();
 		// filterPerson();
-		forEach();
+		// forEach();
 	}
 }

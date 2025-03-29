@@ -16,7 +16,11 @@ public class RotateString {
 		}
 
 		Collections.rotate(arrayList, K);
+		
+		// can be simplied and return as string array
+		String array = arrayList.toString();
 
+		// complicate cast to int array then return and then change back to array string
 		int[] arr = arrayList.parallelStream().mapToInt(Integer::intValue).toArray();
 
 		return arr;

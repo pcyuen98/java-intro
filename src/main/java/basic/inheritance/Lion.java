@@ -10,6 +10,7 @@ public class Lion extends Animal {
 	//i.e. open for extension (new functionality), closed for modification (of existing code)
 	
 	//By following the Open-Closed Principle, you create more flexible, maintainable, and robust Java applications.
+	//Means you are flexible enough to open(create or morth the method) or close (re-used)
 	@Override
 	protected void printAbility() {
 		System.out.println(this.species + " ADDITIONAL ability is " + this.ability);
