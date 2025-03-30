@@ -24,6 +24,7 @@ package basic.inheritance.FavorCompositionOverInheritance;
 //4. Create Lion class extends Animal Class with composition of TeamWorkAbility
 
 // Note: Create/Complete TeamWorkAbility and Lion class based on example below
+// Quiz: Difference between these code and basic.inheritance package?
 
 public class Tiger extends Animal{
 

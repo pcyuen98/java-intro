@@ -28,7 +28,7 @@ public class Animal {
 		System.out.println(this.species + " ability is " + this.ability);
 	}
 	
-	// encapsulation / protection 
+	// encapsulation / protection / public / private / protected
 	public void setAbility(String ability) {
 		this.ability = ability;
 	}

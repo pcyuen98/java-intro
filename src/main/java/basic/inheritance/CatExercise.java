@@ -6,7 +6,7 @@ public class CatExercise {
 
 	// exercise
 	// 1. extend the Animal class
-	// 2. follow the example of Tiger
+	// 2. follow the example of Lion
 	// 3. Your output must be as below
 	
 	// Animal Type is = CARNIVOR

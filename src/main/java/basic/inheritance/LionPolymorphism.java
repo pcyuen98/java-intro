@@ -11,6 +11,8 @@ public class LionPolymorphism extends Animal {
 	
 	//By following the Open-Closed Principle, you create more flexible, maintainable, and robust Java applications.
 	//Means you are flexible enough to open(create or morth the method) or close (re-used)
+	
+	// polymorphism 1
 	@Override
 	protected void printAbility() {
 		System.out.println(this.species + " ADDITIONAL ability is " + this.ability);
@@ -25,7 +27,6 @@ public class LionPolymorphism extends Animal {
 		// When to use?	
 		LionPolymorphism animal2 = new LionPolymorphism("lion");
 		
-		// polymorphism
 		animal.setAbility("swimming");
 		
 		// inherite printSpecies and morth the ability

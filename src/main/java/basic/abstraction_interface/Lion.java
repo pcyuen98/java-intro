@@ -6,7 +6,7 @@ public class Lion implements AnimalInterface {
 	private String species;
 	
 	public Lion(String species) {
-		// Quiz: Why error below?
+		// Quiz: Why error below? and how to fix
 		// super(species);
 		this.species = species;
 	}
