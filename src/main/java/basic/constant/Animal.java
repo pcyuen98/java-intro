@@ -15,6 +15,7 @@ public class Animal {
 		
 	}
 	
+	
 	public void aMethod() {		
 		System.out.println ("for_object_only -->" + for_object_only );				
 	}
@@ -29,6 +30,7 @@ public class Animal {
 		System.out.println("TYPE is" + Animal.TYPE);
 		
 		Animal animal = new Animal();
+		
 		animal.aMethod();
 	}
 }
