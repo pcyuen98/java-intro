@@ -1,8 +1,8 @@
 package basic.inheritance;
 
-public class Lion extends Animal {
+public class LionPolymorphism extends Animal {
 	// constructor must follow the rules
-	public Lion(String species) {
+	public LionPolymorphism(String species) {
 		super(species);
 	}
 
@@ -19,7 +19,11 @@ public class Lion extends Animal {
 	public static void main(String args[]) {
 		
 		// Parent is card
-		Animal animal = new Lion("lion");
+		Animal animal = new LionPolymorphism("lion");
+		
+		// Quiz: What is the difference between animal2 and animal initialization?
+		// When to use?	
+		LionPolymorphism animal2 = new LionPolymorphism("lion");
 		
 		// polymorphism
 		animal.setAbility("swimming");

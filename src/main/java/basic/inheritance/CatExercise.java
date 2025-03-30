@@ -2,7 +2,7 @@ package basic.inheritance;
 
 //Objective exercise: Learn inheritance and polymorhism 
 
-public class Cat {
+public class CatExercise {
 
 	// exercise
 	// 1. extend the Animal class
@@ -12,4 +12,5 @@ public class Cat {
 	// Animal Type is = CARNIVOR
 	// New Species is = cat
 	// cat NEW ability is sleeping
+
 }
