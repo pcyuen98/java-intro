@@ -1,4 +1,4 @@
-package javax;
+package ui;
 
 import java.util.Date;
 
