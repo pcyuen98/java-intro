@@ -20,7 +20,15 @@ import javax.swing.SwingUtilities;
 // Objective #1 - Make the code smaller, reusable and more readable
 // Objective #2 - Usages of static class
 
-// SRP – Single Responsibility Principle
+//SRP – Single Responsibility Principle
+
+// Hint: 
+// 1. Separate the code into smaller module/method
+// 2. Move Listener into another method
+// 3. Separate the listener into another method
+// 4. Create new class for specific function. i.e. login or menu only
+// 5. Create static class for login or menu JFrame
+
 
 public class MainUI extends JFrame {
 
