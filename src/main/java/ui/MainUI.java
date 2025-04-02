@@ -29,7 +29,10 @@ import javax.swing.SwingUtilities;
 // 4. Create new class for specific function. i.e. login or menu only
 // 5. Create static class for login or menu JFrame
 
-
+// Time Frame
+// 15 minutes read the code
+// 30 minutes work on it
+// 30 minutes code review and work together 
 public class MainUI extends JFrame {
 
 	public MainUI() {
