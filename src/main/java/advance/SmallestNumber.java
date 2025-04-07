@@ -15,7 +15,7 @@ public class SmallestNumber {
 	 public static int solution(int[] A) {
 	        Arrays.sort(A);     
 	        int min = 1; 
-	        int cap = A.length; //for efficiency — no need to calculate or access the array object’s length property per iteration 
+	        int cap = A.length; //for efficiency ï¿½ no need to calculate or access the array objectï¿½s length property per iteration 
 	        
 	        for (int i = 0; i < cap; i++){
 	            if(A[i] == min){
