@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 //Hint: 
 //1. Create a abstract class for MenuUI.java and LoginUI.java
 //2. LoginUI.java abstract with implementation
+//3. Move LoginStorage and LoginUtil to util package - Code cleanup / Package usages
 
 //Time Frame
 //15 minutes read the code

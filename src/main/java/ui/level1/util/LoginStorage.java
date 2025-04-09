@@ -1,4 +1,4 @@
-package ui.level1;
+package ui.level1.util;
 
 public class LoginStorage {
 

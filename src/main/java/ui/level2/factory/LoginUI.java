@@ -14,30 +14,34 @@ import ui.level2.MainUI;
 import ui.level2.util.LoginStorage;
 import ui.level2.util.LoginUtil;
 
-public abstract class LoginUI extends JFrame  {
+public abstract class LoginUI extends JFrame implements UI {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField usernameField = new JTextField();
 	private JPasswordField passwordField = new JPasswordField();
 	private JButton loginButton = new JButton("Login");
 	
-	JPanel panel = initPanel();
-
 	public void login() {
 		
 		initDefault();
-		initFrame();
+		JPanel panel = initPanel();
 		add(panel);
-		addLoginButtonListener();
+		addButtonListener();
 	}
 
-	private void initDefault() {
+	@Override
+	public void initDefault() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
+		setTitle("Login - #Login=" + LoginStorage.noOfLogin);
+		setSize(300, 150);
 	}
-	
-	public abstract void initFrame();
 
-	private JPanel initPanel() {
+	@Override
+	public JPanel initPanel() {
 		JPanel panel = new JPanel(new GridLayout(3, 2));
 
 		panel.add(new JLabel("Username:"));
@@ -50,7 +54,8 @@ public abstract class LoginUI extends JFrame  {
 		return panel;
 	}
 
-	private void addLoginButtonListener() {
+	@Override
+	public void addButtonListener() {
 		loginButton.addActionListener(e -> handleLogin());
 	}
 
@@ -68,4 +73,6 @@ public abstract class LoginUI extends JFrame  {
 		}
 		passwordField.setText("");
 	}
+	
+	public abstract void initFrame();
 }

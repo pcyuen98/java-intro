@@ -9,27 +9,26 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import ui.level1.util.LoginStorage;
+import ui.level1.util.LoginUtil;
+
 public class LoginUI extends JFrame {
 
 	private JTextField usernameField = new JTextField();
 	private JPasswordField passwordField = new JPasswordField();
 	private JButton loginButton = new JButton("Login");
 	
-	JPanel panel = initPanel();
-
 	public void login() {
 		
 		initDefault();
-		initFrame();
+		JPanel panel = initPanel();
 		add(panel);
-		addLoginButtonListener();
+		addButtonListener();
 	}
 
 	private void initDefault() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-	}
-	private void initFrame() {
 		setTitle("Login - #Login=" + LoginStorage.noOfLogin);
 		setSize(300, 150);
 	}
@@ -47,7 +46,7 @@ public class LoginUI extends JFrame {
 		return panel;
 	}
 
-	private void addLoginButtonListener() {
+	private void addButtonListener() {
 		loginButton.addActionListener(e -> handleLogin());
 	}
 
