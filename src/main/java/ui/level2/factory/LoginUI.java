@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import ui.level2.LoginStorage;
-import ui.level2.LoginUtil;
 import ui.level2.MainUI;
+import ui.level2.util.LoginStorage;
+import ui.level2.util.LoginUtil;
 
 public abstract class LoginUI extends JFrame  {
 

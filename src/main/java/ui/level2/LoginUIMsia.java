@@ -1,6 +1,7 @@
 package ui.level2;
 
 import ui.level2.factory.LoginUI;
+import ui.level2.util.LoginStorage;
 
 public class LoginUIMsia extends LoginUI {
 
@@ -9,6 +10,4 @@ public class LoginUIMsia extends LoginUI {
 		setTitle("Log Masuk - #Login=" + LoginStorage.noOfLogin);
 		setSize(300, 150);
 	}
-
-
 }
