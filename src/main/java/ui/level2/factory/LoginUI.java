@@ -36,8 +36,7 @@ public abstract class LoginUI extends JFrame implements UI {
 	public void initDefault() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		setTitle("Login - #Login=" + LoginStorage.noOfLogin);
-		setSize(300, 150);
+		initFrame();
 	}
 
 	@Override
