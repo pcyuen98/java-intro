@@ -21,7 +21,7 @@ import javax.swing.SwingUtilities;
 
 public class MainUI extends JFrame {
 
-	public static LoginUIChina loginUI  = new LoginUIChina(); 
+	public static LoginUIMsia loginUI  = new LoginUIMsia(); 
 	public static MenuUI menuUI = new MenuUI(); 
 	
 	public MainUI() {

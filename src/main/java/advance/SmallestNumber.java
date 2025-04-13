@@ -1,28 +1,33 @@
 package advance;
 
-import java.util.Arrays;
+import java.util.*;
+import java.util.stream.*;
 
-public class SmallestNumber {
+class SmallestNumber {
+    public int solution(int[] A) {
+        Set<Integer> positiveSet = Arrays.stream(A)
+            .filter(n -> n > 0)
+            .boxed()
+            .collect(Collectors.toSet());
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+        for (int i = 1; i <= A.length + 1; i++) {
+            if (!positiveSet.contains(i)) {
+                return i;
+            }
+        }
 
-		int[] A = { 1, 1000, 6, 4, 1, 2};
-		System.out.println(solution(A));
+        return A.length + 1;
+    }
 
-	}
+    public static void main(String[] args) {
+    	SmallestNumber sol = new SmallestNumber();
 
-	 public static int solution(int[] A) {
-	        Arrays.sort(A);     
-	        int min = 1; 
-	        int cap = A.length; //for efficiency � no need to calculate or access the array object�s length property per iteration 
-	        
-	        for (int i = 0; i < cap; i++){
-	            if(A[i] == min){
-	                min++;
-	            }//can add else if A[i] > min, break; as suggested by punit
-	        }   
-	        //min = ( min <= 0 ) ? 1:min; //this means: if (min <= 0 ){min =1}else{min = min} you can also do: if min <1 for better efficiency/less jumps
-	        return min;    
-	    }
+        int[] A1 = {1, 3, 6, 4, 1, 2};
+        int[] A2 = {1, 2, 3};
+        int[] A3 = {-1, -3};
+
+        System.out.println("Missing integer (A1): " + sol.solution(A1)); // 5
+        System.out.println("Missing integer (A2): " + sol.solution(A2)); // 4
+        System.out.println("Missing integer (A3): " + sol.solution(A3)); // 1
+    }
 }
