@@ -24,7 +24,7 @@ import javax.swing.SwingUtilities;
  * public static LoginUIMsia loginUI  = new LoginUIMsia();
  * </code></pre>
  *
- * <b>Exercise 2 - Reuse the rest and Rewrite only one method handleLogin() with Malay output.</b>
+ * <b>Exercise 2 - From LoginUIMsia.java, reuse the rest and Rewrite only one method handleLogin() with Malay output.</b>
  * <p>
  * <b>Exercise 3 - Change handleLogin() to an abstract method for code cleanup.</b>
  * <p>
