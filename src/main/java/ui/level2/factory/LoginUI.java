@@ -14,6 +14,7 @@ import ui.level2.MainUI;
 import ui.level2.util.LoginStorage;
 import ui.level2.util.LoginUtil;
 
+
 public abstract class LoginUI extends JFrame implements UI {
 
 	/**
@@ -24,6 +25,7 @@ public abstract class LoginUI extends JFrame implements UI {
 	private JPasswordField passwordField = new JPasswordField();
 	private JButton loginButton = new JButton("Login");
 	
+
 	public void login() {
 		
 		initDefault();
@@ -31,6 +33,7 @@ public abstract class LoginUI extends JFrame implements UI {
 		add(panel);
 		addButtonListener();
 	}
+
 
 	@Override
 	public void initDefault() {

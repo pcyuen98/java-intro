@@ -3,21 +3,42 @@ package ui.level2;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-//Exercise and Objective - DRY, Inheritance and Polymorphism learning
-// Abstract class often associate with factory design pattern
+/**
+ * Exercise and Objective - DRY, Inheritance, and Polymorphism learning.
+ * Abstract class often associated with the factory design pattern.
+ * <p>
+ * <b>Exercise 1 - Implement the abstract method from LoginUI.java:</b>
+ * <p> 
+ * 1. Create LoginUIMsia.java
+ * <pre><code>
+ * public class LoginUIMsia extends LoginUI { }
+ * </code></pre>
+ * Implement the method with Malay wording:
+ * <pre><code>
+ * public void initFrame() {
+ * setTitle("Log Masuk - #Login=" + LoginStorage.noOfLogin);
+ * }
+ * </code></pre>
+ * Init MainUI with static value below:
+ * <pre><code>
+ * public static LoginUIMsia loginUI  = new LoginUIMsia();
+ * </code></pre>
+ *
+ * <b>Exercise 2 - Reuse the rest and Rewrite only one method handleLogin() with Malay output.</b>
+ * <p>
+ * <b>Exercise 3 - Change handleLogin() to an abstract method for code cleanup.</b>
+ * <p>
+ * <b>Exercise 4 - Change MenuUI to abstract factory and code standard as LoginUI:</b>
+ * <p>
+ * Move MenuUI to factory package and as abstract class. Do similar exercise as 1-3 above 
+ * <p>
+ * Upon Completion - Compare Level 2 completed code and level 0 improvement difference. Discussion session
+ *
+ * @author CY
+ * @version 1.0
+ * @since [Insert version here, e.g., "1.0"]
+ */
 
-//Hint: 
-//1. Move MenuUI to factory package and as abstract class. Use LoginUI level 2 as sample
-//2. Change MenuUI to 2 abstract method createMenuUI and initLabel 
-//3. Create MenuUIMsia.java then extends UI.java and implement the #2. abstract method. 
-// Then display message in specific country language. i.e. Welcome to the Main Menu! --> Selamat Datang ke Menu Utama
-
-// Upon Completion - Compare Level 2 completed code and level 0 improvement difference. Discussion session
-
-//Time Frame
-//15 minutes read the code
-//30 minutes work on it
-//30 minutes code review and work together 
 
 public class MainUI extends JFrame {
 
