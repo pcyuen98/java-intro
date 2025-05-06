@@ -3,7 +3,7 @@ package basic.input;
 import java.util.Scanner;
 
 /**
- * 🔍 Change the code below to achieve this function:
+ * 🔍 Brainstorm and discuss how to change the code below to achieve this function. You can use the AI
  *
  * <ul>
  *   <li><b>Separation:</b> Food and drink logic are separated into individual methods,
@@ -21,7 +21,7 @@ import java.util.Scanner;
  * </ul>
  */
 
-public class Exercise_Basic_Input_Food {
+public class ExerciseBasicInputFood {
 
 	 public static void main(String[] args) {
 	        Scanner scanner = new Scanner(System.in);
