@@ -1,0 +1,2 @@
+This is a test log entry.
+Another line from the singleton writer.
