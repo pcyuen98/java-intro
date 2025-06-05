@@ -23,11 +23,15 @@ public class ExerciseBasicFoodWithInputParameter {
 		return Integer.parseInt(args[index]);
 	}
 
+
 	public static void main(String args[]) {
 
 		int foodChoice = parseChoice(args, 0, "food");
 		int drinkChoice = parseChoice(args, 1, "drink");
 
+		System.out.println("First Arguement =" + args[0]);
+		System.out.println("Second Arguement =" + args[1]);
+		
 		double foodPrice = 0;
 		double drinkPrice = 0;
 		String foodName = "";
