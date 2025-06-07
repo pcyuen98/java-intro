@@ -82,7 +82,7 @@ public class OpenCloseFileCommandPattern {
         FileInvoker fileInvoker = new FileInvoker();
 
         // Passing commands using lambda expressions (functional interface)
-        fileInvoker.submit(() -> fileHandler.open());
-        fileInvoker.submit(() -> fileHandler.close());
+        fileInvoker.submit(fileHandler::open);
+        fileInvoker.submit(fileHandler::close);
     }
 }
