@@ -4,93 +4,95 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom; // For efficient random number generation
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Utility class to generate a large text file containing various fruit names.
+ * Utility class to generate a large story-like text file by combining random story fragments.
  */
 public class LargeFileGenerator {
 
     // Target file size: 100 MB
-    private static final long TARGET_FILE_SIZE_BYTES = 100 * 1024 * 1024; // 100 * 1 MB in bytes
-
-    // List of 5 different fruits, including apple and orange
-    private static final List<String> FRUITS = Arrays.asList(
-            "apple", "orange", "banana", "grape", "strawberry"
+    // private static final long TARGET_FILE_SIZE_BYTES = 1000 * 1024 * 1024;
+	 private static final long TARGET_FILE_SIZE_BYTES = 10 * 1024;
+    // Sample story fragments
+    private static final List<String> STORY_FRAGMENTS = Arrays.asList(
+            "Once upon a time in a quiet village,",
+            "there lived a curious young girl named Lily.",
+            "She loved exploring the nearby forest,",
+            "where magical creatures were said to dwell.",
+            "One sunny afternoon,",
+            "she found a glowing stone beneath an ancient oak tree.",
+            "The stone shimmered with a mysterious light,",
+            "and when she touched it, the world around her changed.",
+            "Suddenly, the forest whispered secrets only she could hear.",
+            "Guided by the voices, she embarked on an unforgettable journey.",
+            "Through misty valleys and starlit skies,",
+            "she met talking animals, flying ships, and shadowy guardians.",
+            "Every step took her deeper into the unknown,",
+            "until she reached a kingdom lost in time.",
+            "There, a forgotten prophecy awaited her.",
+            "She was the chosen one, destined to restore balance.",
+            "With courage and kindness,",
+            "she faced the trials of the enchanted realm.",
+            "And in the end,",
+            "she returned home, forever changed and full of wonder."
     );
 
-    /**
-     * Generates a large text file populated with random fruit names.
-     * The file size will be approximately the target size.
-     *
-     * @param filePath The path where the file will be created.
-     * @throws IOException If an I/O error occurs during file creation or writing.
-     */
-    public static void generateFruitFile(String filePath) throws IOException {
+    public static void generateStoryFile(String filePath) throws IOException {
         Path path = Paths.get(filePath);
 
-        // Ensure the directory exists
-        // If filePath is just a filename, getParent() will return null.
-        // Files.createDirectories expects a Path for a directory.
-        // So, we only try to create parent directories if path has one.
         if (path.getParent() != null) {
             Files.createDirectories(path.getParent());
         }
 
-
         long bytesWritten = 0;
-        int bufferSize = 1024 * 8; // 8 KB buffer for efficient writing
+        int bufferSize = 8192;
 
-        // Using try-with-resources to ensure the stream is closed automatically
         try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(path.toFile()), bufferSize)) {
             while (bytesWritten < TARGET_FILE_SIZE_BYTES) {
-                // Get a random fruit from the list
-                String randomFruit = FRUITS.get(ThreadLocalRandom.current().nextInt(FRUITS.size()));
+                String fragment = STORY_FRAGMENTS.get(ThreadLocalRandom.current().nextInt(STORY_FRAGMENTS.size()));
 
-                // Add a newline character to separate fruits
-                String content = randomFruit + System.lineSeparator();
+                // Randomly decide whether to add a period, space, or paragraph break
+                String suffix = chooseRandomSuffix();
+                String content = fragment + suffix;
                 byte[] contentBytes = content.getBytes(StandardCharsets.UTF_8);
 
-                // If adding the next piece of content would exceed the target,
-                // just write a partial piece or break. This ensures it's close to 100MB
-                // but not significantly over if the last piece is large.
                 if (bytesWritten + contentBytes.length > TARGET_FILE_SIZE_BYTES && bytesWritten > 0) {
-                     // Optionally, write only the remaining bytes if needed for exact size,
-                     // but for "approximately 100MB", writing full chunks is fine.
-                     break; // Stop if the next write would push us significantly over
+                    break;
                 }
 
                 bos.write(contentBytes);
                 bytesWritten += contentBytes.length;
             }
+
             System.out.println("Finished writing file: " + filePath);
-            System.out.println("Total bytes written: " + bytesWritten + " (~" + (bytesWritten / (1024.0 * 1024.0)) + " MB)");
+            System.out.printf("Total bytes written: %d (~%.2f MB)%n", bytesWritten, bytesWritten / (1024.0 * 1024.0));
 
         } catch (IOException e) {
-            System.err.println("Error generating file: " + e.getMessage());
-            // Re-throw the exception after logging
+            System.err.println("Error generating story file: " + e.getMessage());
             throw e;
         }
     }
 
+    private static String chooseRandomSuffix() {
+        int choice = ThreadLocalRandom.current().nextInt(100);
+        if (choice < 5) return "\n\n";       // paragraph break
+        if (choice < 50) return ". ";        // sentence end
+        return " ";                          // continuation
+    }
+
     public static void main(String[] args) {
-        String fileName = "fruits_100mb.txt";
-        // Removed outputPath. The file will be created in the current working directory.
-        String fullFilePath = fileName; // File will be created directly in the current directory
+        String fileName = "small_fruits_100mb.txt";
 
         try {
-            System.out.println("Attempting to generate a 100 MB file: " + fullFilePath);
-            // Changed generateFruitFile(fileName) to generateFruitFile(fullFilePath) for consistency.
-            generateFruitFile(fullFilePath);
-            System.out.println("File generation completed successfully.");
+            System.out.println("Generating a 100 MB story file: " + fileName);
+            generateStoryFile(fileName);
+            System.out.println("Story file generation completed.");
         } catch (IOException e) {
-            System.err.println("File generation failed: " + e.getMessage());
+            System.err.println("Story file generation failed: " + e.getMessage());
         }
     }
 }
-
