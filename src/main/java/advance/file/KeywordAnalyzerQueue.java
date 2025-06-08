@@ -1,6 +1,5 @@
 package advance.file;
 
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
@@ -13,55 +12,78 @@ import java.util.stream.Collectors;
 public class KeywordAnalyzerQueue {
 
     private static final int TOP_N = 10;
-    private static final int NUM_WORKERS = 10;
+    private static final int NUM_WORKERS = 15;
     private static final String END_OF_FILE = "__END__";
 
-    public static String[] extractBeforeAndAfterLastFullStop(String text) {
-        int lastDotIndex = text.lastIndexOf('.');
-        if (lastDotIndex == -1) {
-            return new String[]{"", ""}; // No full stop found
-        }
-        return new String[]{
-            text.substring(0, lastDotIndex + 1),
-            text.substring(lastDotIndex + 1)
-        };
+    private final ExecutorService executor = Executors.newFixedThreadPool(NUM_WORKERS);
+
+    public static void main(String[] args) {
+        KeywordAnalyzerQueue analyzer = new KeywordAnalyzerQueue();
+        analyzer.analyzeFile("giant_file1gb.txt");
     }
 
-    public Map<String, Long> getTopKeywords(String filePath, int topN) {
-        Path path = Paths.get(filePath);
-        validateFile(path);
+    public void analyzeFile(String filePath) {
+        Runtime runtime = Runtime.getRuntime();
 
-        long startTime = System.nanoTime();
+        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+        long totalStartTime = System.nanoTime();
+
+        try {
+            Path path = Paths.get(filePath);
+            validateFile(path);
+            Map<String, Long> result = getTopKeywordsQueue(path, TOP_N);
+            long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+
+            System.out.println("Top " + TOP_N + " Keywords:");
+            result.forEach((k, v) -> System.out.printf("%s: %d%n", k, v));
+
+            System.out.printf("KeywordAnalyzerQueue Total Time Taken: %d ms%n", (System.nanoTime() - totalStartTime) / 1_000_000);
+            System.out.printf("[Queue] Memory Used: %.2f MB%n", (memoryAfter - memoryBefore) / 1024.0 / 1024.0);
+
+        } catch (RuntimeException e) {
+            System.err.println("Error: " + e.getMessage());
+        } finally {
+            executor.shutdown();
+        }
+    }
+
+    public Map<String, Long> getTopKeywordsQueue(Path path, int topN) {
 
         ConcurrentLinkedQueue<String> paragraphQueue = new ConcurrentLinkedQueue<>();
-        List<Future<Map<String, Long>>> futures = new ArrayList<>();
-        ExecutorService executor = Executors.newFixedThreadPool(NUM_WORKERS);
+        List<Future<Map<String, Long>>> futures = startWorkerThreads(paragraphQueue);
 
-        // Start worker threads
+        long readStart = System.nanoTime();
+        readFileToQueue(path, paragraphQueue);
+        long readEnd = System.nanoTime();
+        System.out.printf("getTopKeywordsQueue Time to read and enqueue: %d ms%n", (readEnd - readStart) / 1_000_000);
+
+        return mergeWorkerResults(futures, topN);
+    }
+
+    private List<Future<Map<String, Long>>> startWorkerThreads(Queue<String> paragraphQueue) {
+        List<Future<Map<String, Long>>> futures = new ArrayList<>();
         for (int i = 0; i < NUM_WORKERS; i++) {
             futures.add(executor.submit(() -> {
-            	long readEndTime = System.nanoTime();
                 Map<String, Long> localCounts = new HashMap<>();
                 while (true) {
                     String paragraph = paragraphQueue.poll();
                     if (paragraph == null) {
-                        Thread.sleep(1); // Wait for new data
+                        Thread.sleep(1); // Wait for more data
                         continue;
                     }
                     if (END_OF_FILE.equals(paragraph)) break;
 
-                    Map<String, Long> count = Arrays.stream(paragraph.toLowerCase().split("[^a-z]+"))
-                            .filter(word -> !word.isEmpty())
-                            .collect(Collectors.groupingBy(word -> word, Collectors.counting()));
-
-                    count.forEach((k, v) -> localCounts.merge(k, v, Long::sum));
+                    Arrays.stream(paragraph.toLowerCase().split("[^a-z]+"))
+                          .filter(word -> !word.isEmpty())
+                          .forEach(word -> localCounts.merge(word, 1L, Long::sum));
                 }
-                System.out.printf("Worker" + Thread.currentThread().getId() + " Time to dequeue: %d ms%n", (readEndTime - startTime) / 1_000_000);
                 return localCounts;
             }));
         }
+        return futures;
+    }
 
-        // File reading logic
+    private void readFileToQueue(Path path, Queue<String> paragraphQueue) {
         try (SeekableByteChannel channel = Files.newByteChannel(path, StandardOpenOption.READ)) {
             ByteBuffer buffer = ByteBuffer.allocate(32 * 1024);
             StringBuilder tail = new StringBuilder();
@@ -69,109 +91,78 @@ public class KeywordAnalyzerQueue {
 
             while (channel.read(buffer) > 0) {
                 buffer.flip();
-                String content = StandardCharsets.UTF_8.decode(buffer).toString();
-                content = tail + content;
+                String content = tail + StandardCharsets.UTF_8.decode(buffer).toString();
+                buffer.clear();
 
-                String[] str = extractBeforeAndAfterLastFullStop(content);
-                if (!str[0].isEmpty()) {
-                    paragraph.append(str[0]);
+                String[] parts = extractBeforeAndAfterLastFullStop(content);
+                if (!parts[0].isEmpty()) {
+                    paragraph.append(parts[0]);
                     paragraphQueue.offer(paragraph.toString());
                     paragraph.setLength(0);
                     tail.setLength(0);
-                    tail.append(str[1]);
+                    tail.append(parts[1]);
                 } else {
                     paragraph.append(content);
                     tail.setLength(0);
                 }
-
-                buffer.clear();
             }
 
-            // Add remaining paragraph (if any)
             if (paragraph.length() > 0) {
                 paragraphQueue.offer(paragraph.toString());
             }
 
-            // Add poison pills
             for (int i = 0; i < NUM_WORKERS; i++) {
                 paragraphQueue.offer(END_OF_FILE);
             }
 
         } catch (IOException e) {
-            throw new RuntimeException("Error reading file with SeekableByteChannel", e);
+            throw new RuntimeException("Error reading file", e);
         }
+    }
 
-        long readEndTime = System.nanoTime();
-        System.out.printf("Time to read and enqueue: %d ms%n", (readEndTime - startTime) / 1_000_000);
+    private Map<String, Long> mergeWorkerResults(List<Future<Map<String, Long>>> futures, int topN) {
+        Map<String, Long> mergedCounts = new HashMap<>();
 
-        // Merge results from workers
-        Map<String, Long> finalCounts = new HashMap<>();
         for (Future<Map<String, Long>> future : futures) {
             try {
-                Map<String, Long> workerResult = future.get();
-                workerResult.forEach((k, v) -> finalCounts.merge(k, v, Long::sum));
+                future.get().forEach((k, v) -> mergedCounts.merge(k, v, Long::sum));
             } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException("Error collecting worker results", e);
+                throw new RuntimeException("Error in worker thread", e);
             }
         }
 
-        executor.shutdown();
-
-        long sortStartTime = System.nanoTime();
-
-        Map<String, Long> sortedTopKeywords = finalCounts.entrySet().stream()
+        long sortStart = System.nanoTime();
+        Map<String, Long> topKeywords = mergedCounts.entrySet().stream()
                 .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
                 .limit(topN)
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
-                        (e1, e2) -> e1,
+                        (a, b) -> a,
                         LinkedHashMap::new
                 ));
+        long sortEnd = System.nanoTime();
+        System.out.printf("Time to process and sort keywords: %d ms%n", (sortEnd - sortStart) / 1_000_000);
 
-        long sortEndTime = System.nanoTime();
-        System.out.printf("Time to process and sort keywords: %d ms%n", (sortEndTime - sortStartTime) / 1_000_000);
+        return topKeywords;
+    }
 
-        return sortedTopKeywords;
+    private static String[] extractBeforeAndAfterLastFullStop(String text) {
+        int lastDotIndex = text.lastIndexOf('.');
+        return lastDotIndex == -1
+                ? new String[]{"", ""}
+                : new String[]{
+                    text.substring(0, lastDotIndex + 1),
+                    text.substring(lastDotIndex + 1)
+                };
     }
 
     private void validateFile(Path path) {
         if (!Files.exists(path) || !Files.isReadable(path)) {
-            throw new IllegalArgumentException("Invalid or unreadable file path: " + path);
+            throw new IllegalArgumentException("File does not exist or is not readable: " + path);
         }
         if (!path.toString().toLowerCase().endsWith(".txt")) {
-            throw new IllegalArgumentException("Only .txt files are allowed. Provided: " + path);
-        }
-    }
-
-    public static void main(String[] args) {
-    	KeywordAnalyzerQueue analyzer = new KeywordAnalyzerQueue();
-        analyzeFile(analyzer, "fruits_100mb.txt");
-    }
-
-    private static void analyzeFile(KeywordAnalyzerQueue analyzer, String filePath) {
-        Runtime runtime = Runtime.getRuntime();
-        runtime.gc();
-
-        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
-
-        try {
-            long sortStartTime = System.nanoTime();
-
-
-            Map<String, Long> result = analyzer.getTopKeywords(filePath, TOP_N);
-
-            long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
-
-            System.out.println("Top " + TOP_N + " Keywords:");
-            result.forEach((k, v) -> System.out.printf("%s: %d%n", k, v));
-
-            System.out.printf("All processes TimeTaken: %d ms%n", (System.nanoTime() - sortStartTime) / 1_000_000);
-
-            System.out.printf("Memory Used: %.2f MB%n", (memoryAfter - memoryBefore) / 1024.0 / 1024.0);
-
-        } catch (IllegalArgumentException e) {
-            System.err.println("Error: " + e.getMessage());
+            throw new IllegalArgumentException("Only .txt files are allowed: " + path);
         }
     }
 }
