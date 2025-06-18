@@ -13,6 +13,7 @@ public class ReadFileLineByLineUsingBufferedReader {
 		   reader = new BufferedReader(new FileReader("D:\\workspace\\java-intro\\src\\main\\java\\basic\\file\\sample.txt"));
 		   String line = reader.readLine();
 
+			   
 		   while (line != null) {
 		    System.out.println(line);
 		    // read next line

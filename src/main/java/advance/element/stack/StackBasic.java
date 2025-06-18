@@ -27,7 +27,7 @@ string S consists only of the following characters: "(", "{", "[", "]", "}" and/
 public class StackBasic {
 
 	public static int solution(String S) {
-        Deque<Character> stack = new ArrayDeque<Character>();
+        Deque<Character> stack = new ArrayDeque<>();
 
         for(int i = 0; i < S.length(); i++) {
         	

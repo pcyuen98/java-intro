@@ -1,42 +1,31 @@
 package advance.element.deque;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.*;
 
 public class DequeOnSymbols {
+    private static final Map<Character, Character> BRACKETS = Map.of(
+            ')', '(', 
+            ']', '[', 
+            '}', '{'
+        );
 
-	public static int solution(String S) {
-		Deque<Character> deque = new ArrayDeque<Character>();
+        public static int solution(String S) {
+            Deque<Character> stack = new ArrayDeque<>();
 
-		for (int i = 0; i < S.length(); i++) {
-			char c = S.charAt(i);
-			System.out.println("c---->" + c);
-			System.out.println("stack---->" + deque);
-			switch (c) {
-			case ')':
-				if (deque.isEmpty() || deque.pop() != '(')
-					return 0;
-				break;
-			case ']':
-				if (deque.isEmpty() || deque.pop() != '[')
-					return 0;
-				break;
-			case '}':
-				if (deque.isEmpty() || deque.pop() != '{')
-					return 0;
-				break;
-			default:
-				deque.push(c);
-				break;
-			}
-		}
+            for (char c : S.toCharArray()) {
+                if (BRACKETS.containsKey(c)) {
+                    if (stack.isEmpty() || stack.pop() != BRACKETS.get(c)) {
+                        return 0;
+                    }
+                } else {
+                    stack.push(c);
+                }
+            }
 
-		return deque.isEmpty() ? 1 : 0;
-	}
-	
-	public static void main(String args[]) {
-		String A = "({}{})";
-		System.out.println(solution(A));
+            return stack.isEmpty() ? 1 : 0;
+        }
 
-	}
+    public static void main(String[] args) {
+        System.out.println(solution("({}{})"));  // Output: 1
+    }
 }

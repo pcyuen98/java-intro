@@ -6,7 +6,7 @@ import java.util.Deque;
 public class SimpleNestedQueue {
 
 	public static int solution(String S) {
-		Deque<Character> stack = new ArrayDeque<Character>();
+		Deque<Character> stack = new ArrayDeque<>();
 
 		for (int i = 0; i < S.length(); i++) {
 			char c = S.charAt(i);

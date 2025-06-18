@@ -7,24 +7,21 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 public class KeywordAnalyzerQueue {
 
     private static final int TOP_N = 10;
     private static final int NUM_WORKERS = 15;
-    private static final String END_OF_FILE = "__END__";
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(NUM_WORKERS);
+    private final KeywordWorkerManager workerManager = new KeywordWorkerManager(NUM_WORKERS);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         KeywordAnalyzerQueue analyzer = new KeywordAnalyzerQueue();
         analyzer.analyzeFile("giant_file1gb.txt");
     }
 
-    public void analyzeFile(String filePath) {
+    public void analyzeFile(String filePath) throws InterruptedException, ExecutionException {
         Runtime runtime = Runtime.getRuntime();
-
         long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
         long totalStartTime = System.nanoTime();
 
@@ -43,44 +40,25 @@ public class KeywordAnalyzerQueue {
         } catch (RuntimeException e) {
             System.err.println("Error: " + e.getMessage());
         } finally {
-            executor.shutdown();
+            workerManager.shutdown();
         }
     }
 
-    public Map<String, Long> getTopKeywordsQueue(Path path, int topN) {
-
+    public Map<String, Long> getTopKeywordsQueue(Path path, int topN) throws InterruptedException, ExecutionException {
         ConcurrentLinkedQueue<String> paragraphQueue = new ConcurrentLinkedQueue<>();
-        List<Future<Map<String, Long>>> futures = startWorkerThreads(paragraphQueue);
+        List<Future<Map<String, Long>>> futures = workerManager.startWorkerThreads(paragraphQueue);
 
         long readStart = System.nanoTime();
         readFileToQueue(path, paragraphQueue);
         long readEnd = System.nanoTime();
         System.out.printf("getTopKeywordsQueue Time to read and enqueue: %d ms%n", (readEnd - readStart) / 1_000_000);
 
-        return mergeWorkerResults(futures, topN);
-    }
+        long sortStart = System.nanoTime();
+        Map<String, Long> topKeywords = workerManager.mergeWorkerResults(futures, topN);
+        long sortEnd = System.nanoTime();
+        System.out.printf("Time to process and sort keywords: %d ms%n", (sortEnd - sortStart) / 1_000_000);
 
-    private List<Future<Map<String, Long>>> startWorkerThreads(Queue<String> paragraphQueue) {
-        List<Future<Map<String, Long>>> futures = new ArrayList<>();
-        for (int i = 0; i < NUM_WORKERS; i++) {
-            futures.add(executor.submit(() -> {
-                Map<String, Long> localCounts = new HashMap<>();
-                while (true) {
-                    String paragraph = paragraphQueue.poll();
-                    if (paragraph == null) {
-                        Thread.sleep(1); // Wait for more data
-                        continue;
-                    }
-                    if (END_OF_FILE.equals(paragraph)) break;
-
-                    Arrays.stream(paragraph.toLowerCase().split("[^a-z]+"))
-                          .filter(word -> !word.isEmpty())
-                          .forEach(word -> localCounts.merge(word, 1L, Long::sum));
-                }
-                return localCounts;
-            }));
-        }
-        return futures;
+        return topKeywords;
     }
 
     private void readFileToQueue(Path path, Queue<String> paragraphQueue) {
@@ -112,39 +90,12 @@ public class KeywordAnalyzerQueue {
             }
 
             for (int i = 0; i < NUM_WORKERS; i++) {
-                paragraphQueue.offer(END_OF_FILE);
+                paragraphQueue.offer(KeywordWorkerManager.END_OF_FILE);
             }
 
         } catch (IOException e) {
             throw new RuntimeException("Error reading file", e);
         }
-    }
-
-    private Map<String, Long> mergeWorkerResults(List<Future<Map<String, Long>>> futures, int topN) {
-        Map<String, Long> mergedCounts = new HashMap<>();
-
-        for (Future<Map<String, Long>> future : futures) {
-            try {
-                future.get().forEach((k, v) -> mergedCounts.merge(k, v, Long::sum));
-            } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException("Error in worker thread", e);
-            }
-        }
-
-        long sortStart = System.nanoTime();
-        Map<String, Long> topKeywords = mergedCounts.entrySet().stream()
-                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-                .limit(topN)
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (a, b) -> a,
-                        LinkedHashMap::new
-                ));
-        long sortEnd = System.nanoTime();
-        System.out.printf("Time to process and sort keywords: %d ms%n", (sortEnd - sortStart) / 1_000_000);
-
-        return topKeywords;
     }
 
     private static String[] extractBeforeAndAfterLastFullStop(String text) {

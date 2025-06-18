@@ -11,7 +11,7 @@ public class Rotation {
 		if (A.length == 0 ) {
 			return A;
 		}
-		List<Integer> list = new LinkedList<Integer>();
+		List<Integer> list = new LinkedList<>();
 		for (int currentInt : A) {
 			list.add(currentInt);
 		}
